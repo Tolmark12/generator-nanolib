@@ -1,0 +1,28 @@
+doctype html
+html(lang="en")
+  
+  head
+    title Yo Gulp Update
+
+    // build:css style.css
+    link(href="stage/css/stage.css", rel="stylesheet")
+    link(href="css/main.css", rel="stylesheet")
+    // endbuild
+
+  body
+    p Hello from the stage/index.js.
+
+    // build:js js/libs.js
+    script(src="bower-libs/jquery/dist/jquery.js")
+    script(src="bower-libs/jade/runtime.js")
+    // endbuild
+
+    // build:js2 js/app.js
+    script(src="js/jade-templates.js")
+    script(src="js/app.js")
+    script(src="stage/js/stage.js")
+    // endbuild
+    
+    // build:remove 
+    script(src="http://localhost:35729/livereload.js")
+    // endbuild
