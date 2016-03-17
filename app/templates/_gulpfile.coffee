@@ -4,6 +4,7 @@ bump         = require 'gulp-bump'
 cleanCSS     = require 'gulp-clean-css'
 concat       = require 'gulp-concat'
 connect      = require 'connect'
+coffeeify    = require 'gulp-coffeeify'
 foreach      = require 'gulp-foreach'
 fs           = require 'fs'
 git          = require 'gulp-git'
@@ -15,19 +16,17 @@ jade         = require 'gulp-jade'
 livereload   = require 'gulp-livereload'
 open         = require "gulp-open"
 plumber      = require 'gulp-plumber'
-rev          = require 'gulp-rev'  # Not currently using it, but should
+rev          = require 'gulp-rev'  # Not currently using..
 rimraf       = require 'rimraf'
 sass         = require 'gulp-sass'
 serveStatic  = require 'serve-static'
 serveIndex   = require 'serve-index'
+shadowIcons  = require 'gulp-shadow-library'
 uglify       = require 'gulp-uglify'
 usemin       = require 'gulp-usemin'
 watch        = require 'gulp-watch'
 wrap         = require 'gulp-wrap'
 
-shadowIcons  = require 'gulp-shadow-library'
-webpack      = require 'webpack-stream'
-babel        = require 'gulp-babel'
 
 # Paths to source files
 
@@ -35,12 +34,12 @@ jadeStagePath     = 'stage/index.jade'
 jadePath          = 'app/jade/**/*.jade'
 cssPath           = 'app/scss/**/*.scss'
 cssStagePath      = 'stage/stage.scss'
-appJsPath         = 'app/js/**/*.js'
-stageJsPath       = 'stage/**/*.js'
+appJsPath         = 'app/coffee/**/*.coffee'
+stageJsPath       = 'stage/**/*.coffee'
 assetPath         = 'app/assets/*.!(svg)'
 svgPath           = 'app/assets/compiled/*.svg'
-mainJsFile        = './app/js/main.js'
-mainStageJsFile   = './stage/stage.js'
+mainJsFile        = './app/coffee/main.coffee'
+mainStageJsFile   = './stage/stage.coffee'
 
 # ------------------------------------ Source compiling
 
@@ -79,24 +78,14 @@ js = (cb)->
   # App
   gulp.src( mainJsFile )
     .pipe plumber()
-    .pipe webpack({
-      output: { filename: 'app.js'},
-      module: {
-        loaders: [ { test: /\.js$/, exclude:/(node_modules|bower_components)/, loader: "babel", query: {presets: ['es2015']} } ]
-      }
-    })
+    .pipe coffeeify({options: { debug: true, paths: [__dirname + '/node_modules', __dirname + '/app/coffee/'] } })
     .pipe gulp.dest('server/js/')
     .on('end', cb)
 
 jsStage = (cb)->
   gulp.src mainStageJsFile
     .pipe plumber()
-    .pipe webpack({
-      output: { filename: 'stage.js'},
-      module: {
-        loaders: [ { test: /\.js$/, exclude:/(node_modules|bower_components)/, loader: "babel", query: {presets: ['es2015']} } ]
-      }
-    })
+    .pipe coffeeify({options: { debug: true, paths: [__dirname + '/node_modules', __dirname + '/app/coffee/'] } })
     .pipe gulp.dest('server/stage/js')
     .on('end', cb)
 
