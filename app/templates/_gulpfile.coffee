@@ -204,4 +204,4 @@ gulp.task 'bumpVersion',                               ()    -> bumpBowerVersion
 gulp.task 'copyStatics', ['bowerLibs'],                ()    -> copyAssets('rel/assets', ->)
 gulp.task 'releaseCompile', ['copyStatics'],           (cb)  -> compileFiles(false, cb)
 gulp.task 'minify',['releaseCompile'],                 ()    -> minifyAndJoin();
-gulp.task 'rel', ['rel:clean', 'bumpVersion', 'minify'],     -> #pushViaGit()
+gulp.task 'rel', ['rel:clean', 'bumpVersion', 'minify'],     -> rimraf './rel/index.html', ->
