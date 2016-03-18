@@ -1,6 +1,6 @@
 {
   "name": "generator-nanolib",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Generator for nanobox js lib scaffolding",
   "license": "MIT",
   "main": "app/index.js",

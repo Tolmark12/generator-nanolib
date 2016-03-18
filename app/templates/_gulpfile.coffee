@@ -46,12 +46,14 @@ mainStageJsFile   = './stage/stage.coffee'
 htmlStage = (cb)->
   gulp.src jadeStagePath
     .pipe jade()
+    .pipe plumber()
     .pipe gulp.dest('./server/')
     .on('end', cb)
 
 html = (cb)->
   gulp.src( jadePath )
     .pipe jade(client: true)
+    .pipe plumber()
     .pipe wrap( <%= jadeExp1 %> )
     .pipe concat('jade-templates.js')
     .pipe wrap( <%= jadeExp2 %> )
@@ -62,6 +64,7 @@ css = (cb)->
   # Stage css - not included in build
   gulp.src( cssPath )
     .pipe sass({errLogToConsole: true})
+    .pipe plumber()
     .pipe autoprefixer( browsers: ['last 1 version'],cascade: false )
     .pipe gulp.dest('./server/css')
     .on('end', cb)
@@ -70,6 +73,7 @@ cssStage = (cb)->
   # Stage css - not included in build
   gulp.src( cssStagePath )
     .pipe sass({errLogToConsole: true})
+    .pipe plumber()
     .pipe autoprefixer( browsers: ['last 1 version'],cascade: false )
     .pipe gulp.dest('./server/stage/css')
     .on('end', cb)
