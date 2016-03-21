@@ -17,10 +17,11 @@ module.exports = yeoman.generators.Base.extend(
         { type: 'input', name: 'name',      message: 'Name the project (Capitalize Each Word, Plus A Space):',           default: @appname}
         { type: 'input', name: 'nameSpace', message: 'Choose a namespace (defaults to `nanobox`):', default: 'nanobox'}
       ], ( (answers) ->
-        @nameSpace        = answers.nameSpace
-        @appname          = answers.name
-        @appNameLowerCase = answers.name.toLowerCase().replace(/\s/gi, "-")
-        @appNameCamel     = answers.name.replace(/\s/gi, "")
+        @appname           = answers.name                                                       # Some Project Name
+        @appNameLowerCase  = answers.name.toLowerCase().replace(/\s/gi, "-")                    # some-project-name
+        @appNameCamel      = answers.name.replace(/\s/gi, "")                                   # SomeProjectName
+        @appNameLowerCamel = @appNameCamel.charAt(0).toUpperCase() + @appNameCamel.slice(1);    # someProjectName
+        @nameSpace         = answers.nameSpace
         @log "Creating : #{@nameSpace}.#{@appNameCamel}"
 
         done()
@@ -54,8 +55,8 @@ module.exports = yeoman.generators.Base.extend(
       # GULP FILE:
       # I had to move these two jade snippets out of the file because
       # they use the same <%= %> syntax that @fs.copyTpl() uses.
-      jade1       =      "\"jadeTemplate['<%= file.relative.split('.')[0] %>'] = <%= file.contents %>;\\n\""
-      jade2       =      "\"jadeTemplate = {};\\n<%= file.contents %>\""
+      jade1       =      "\"#{@appNameLowerCamel}['<%= file.relative.split('.')[0] %>'] = <%= file.contents %>;\\n\""
+      jade2       =      "\"#{@appNameLowerCamel} = {};\\n<%= file.contents %>\""
       randomPort  = Math.floor( Math.random()*7000 ) + 3000
       @fs.copyTpl(
         @templatePath    "_gulpfile.coffee"
