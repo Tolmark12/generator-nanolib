@@ -53,15 +53,14 @@ module.exports = yeoman.generators.Base.extend(
       @fs.copy    @templatePath("_package.json"),             @destinationPath("package.json")
 
       # GULP FILE:
-      # I had to move these two jade snippets out of the file because
-      # they use the same <%= %> syntax that @fs.copyTpl() uses.
-      jade1       =      "\"#{@appNameLowerCamel}['<%= file.relative.split('.')[0] %>'] = <%= file.contents %>;\\n\""
-      jade2       =      "\"#{@appNameLowerCamel} = {};\\n<%= file.contents %>\""
+      # I had to move this jade snippet out of the file because jade
+      # uses the same <%= %> syntax that @fs.copyTpl() uses.
+      jade        = "\"module.exports = <%= file.contents %>\""
       randomPort  = Math.floor( Math.random()*7000 ) + 3000
       @fs.copyTpl(
         @templatePath    "_gulpfile.coffee"
         @destinationPath "gulpfile.coffee"
-        port:randomPort, jadeExp1:jade1, jadeExp2: jade2
+        port:randomPort, jadeExp:jade, 
       )
 
   end: ->
