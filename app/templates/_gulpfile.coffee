@@ -21,7 +21,7 @@ rimraf       = require 'rimraf'
 sass         = require 'gulp-sass'
 serveStatic  = require 'serve-static'
 serveIndex   = require 'serve-index'
-shadowIcons  = require 'gulp-shadow-library'
+shadowIcons  = require 'gulp-shadow-icons'
 uglify       = require 'gulp-uglify'
 usemin       = require 'gulp-usemin'
 watch        = require 'gulp-watch'
@@ -59,19 +59,15 @@ html = (cb)->
     .on('end', cb)
 
 css = (cb)->
-  # Stage css - not included in build
   gulp.src( cssPath )
-    .pipe sass({errLogToConsole: true})
-    .pipe plumber()
+    .pipe sass().on('error', sass.logError)
     .pipe autoprefixer( browsers: ['last 1 version'],cascade: false )
     .pipe gulp.dest('./server/css')
     .on('end', cb)
 
 cssStage = (cb)->
-  # Stage css - not included in build
   gulp.src( cssStagePath )
-    .pipe sass({errLogToConsole: true})
-    .pipe plumber()
+    .pipe sass().on('error', sass.logError)
     .pipe autoprefixer( browsers: ['last 1 version'],cascade: false )
     .pipe gulp.dest('./server/stage/css')
     .on('end', cb)
